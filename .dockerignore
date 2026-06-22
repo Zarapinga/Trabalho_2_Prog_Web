@@ -1,0 +1,8 @@
+venv
+frontend
+db.sqlite3
+media
+.git
+__pycache__
+*.pyc
+*.pdf

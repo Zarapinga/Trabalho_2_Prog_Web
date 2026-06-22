@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Arquivos de mídia enviados (uploads de TCC)
+media/
+
 # C extensions
 *.so
 

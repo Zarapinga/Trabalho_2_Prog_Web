@@ -62,9 +62,27 @@ O endpoint `/api/tccs/estatisticas/` retorna:
 }
 ```
 
-## Como Executar
+## Como Executar (Docker — backend + frontend + PostgreSQL)
 
-1. `python -m venv venv`
+A forma mais simples de subir todo o sistema (API + interface React + banco
+PostgreSQL) é via `docker-compose`, a partir da raiz do repositório:
+
+```bash
+docker compose up --build
+```
+
+* Frontend (React): http://localhost:8080
+* API (backend): http://localhost:8000/api/
+
+As migrações e a carga inicial de dados (`load.py`) são executadas
+automaticamente na primeira subida.
+
+## Como Executar (backend manualmente)
+
+> Requer **Python 3.12+** (Django 6.0). Sem variáveis de ambiente de
+> PostgreSQL definidas, o backend usa SQLite local.
+
+1. `python3.12 -m venv venv`
 2. `source venv/bin/activate` Linux
 3. `venv\Scripts\activate` Windows
 4. `pip install -r requirements.txt`
@@ -72,6 +90,8 @@ O endpoint `/api/tccs/estatisticas/` retorna:
 6. `python manage.py migrate`
 7. `python load.py` (para popular dados iniciais)
 8. `python manage.py runserver`
+
+O frontend React fica na pasta [`frontend/`](frontend/) — veja o README de lá.
 
 Para visualização das informações acesse os endpoints, como o exemplo: [http://127.0.0.1:8000/api/](http://127.0.0.1:8000/api/).
 

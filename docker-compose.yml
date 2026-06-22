@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: tccdb
+      POSTGRES_USER: tccuser
+      POSTGRES_PASSWORD: tccpass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tccuser -d tccdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    environment:
+      POSTGRES_DB: tccdb
+      POSTGRES_USER: tccuser
+      POSTGRES_PASSWORD: tccpass
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+    ports:
+      - "8000:8000"
+    volumes:
+      - media:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # O navegador acessa o backend pela porta publicada no host.
+        VITE_API_BASE_URL: http://localhost:8000
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  media:
